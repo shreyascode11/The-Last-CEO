@@ -44,7 +44,7 @@ export const Engine = () => {
     <div className="min-h-screen bg-[#060814] text-white scanlines">
       <LoadingOverlay isLoading={isLoading} />
       
-      <div className="container py-8 px-6 mx-auto max-w-7xl space-y-8">
+      <div className="container py-5 sm:py-8 px-3 sm:px-6 mx-auto max-w-7xl space-y-5 sm:space-y-8">
         
 
         {/* Visual Progress Timeline */}
@@ -58,7 +58,7 @@ export const Engine = () => {
         </div>
 
         {/* HUD Vitals stats & charts split view */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 animate-in fade-in slide-in-from-bottom-12 duration-700 delay-500 fill-mode-both">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-8 animate-in fade-in slide-in-from-bottom-12 duration-700 delay-500 fill-mode-both">
           <div className="flex flex-col h-full">
             <BudgetChart />
           </div>

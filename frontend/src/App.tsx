@@ -13,13 +13,24 @@ import { Chatbot } from '@/components/Chatbot';
 const Layout = () => {
   const location = useLocation();
   const path = location.pathname;
-  // Sidebar belongs to the dashboard phase only — hidden on the landing page and the corporate game flow.
+  // Sidebar belongs to the dashboard phase only — hidden on landing, auth, and the corporate game flow.
   const sidebarAvailable = path !== '/' && path !== '/enter' && path !== '/auth';
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(() => typeof window !== 'undefined' && window.innerWidth >= 1024);
 
   return (
     <div className="flex bg-[#040610] h-screen text-slate-100">
-      {sidebarAvailable && sidebarOpen && <Sidebar onClose={() => setSidebarOpen(false)} />}
+      {sidebarAvailable && sidebarOpen && (
+        <>
+          {/* Mobile backdrop — tap to dismiss the drawer */}
+          <div
+            onClick={() => setSidebarOpen(false)}
+            className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm lg:hidden"
+          />
+          <div className="fixed inset-y-0 left-0 z-50 lg:static lg:z-auto">
+            <Sidebar onClose={() => setSidebarOpen(false)} />
+          </div>
+        </>
+      )}
       {sidebarAvailable && !sidebarOpen && (
         <button
           onClick={() => setSidebarOpen(true)}
@@ -39,7 +50,7 @@ const Layout = () => {
           <Route path="/database" element={<Database />} />
         </Routes>
       </main>
-      <Chatbot />
+      {path !== '/auth' && <Chatbot />}
     </div>
   );
 };

@@ -66,7 +66,7 @@ As organizations adopt Artificial Intelligence, business leaders face high-stake
 
 | | Feature | Description |
 | :---: | :--- | :--- |
-| 🏢 | **Guided Onboarding** | A cinematic flow — Landing → Boardroom Interview → Avatar Design → Live Dashboard |
+| 🏢 | **Guided Onboarding** | A cinematic flow — Landing → Sign In → Boardroom Interview → Avatar Design → Live Dashboard |
 | 🏛️ | **Conversational Board Meeting** | An interview with the Chairman, CFO, CTO, CHRO & CRO defines your company and AI posture |
 | 🎭 | **CEO Avatar Skins** | 6 purely cosmetic skins (Cyberpunk Exec, AI Researcher, Quant, Stealth Agent, and more) |
 | 🕹️ | **3D Playable Office** | Walk a voxel CEO around an isometric office — **WASD / arrow keys / on-screen joystick**, left-click to pan, with fullscreen & ambient-audio toggles — and step up to stations to commit decisions |
@@ -79,6 +79,9 @@ As organizations adopt Artificial Intelligence, business leaders face high-stake
 | 🧪 | **ML Strategy Simulator** | A live "what-if" sandbox — drag strategy levers and the XGBoost model re-forecasts revenue, ROI & risk in real time |
 | 🔍 | **Explainable AI (SHAP)** | Every forecast is broken down by factor in dollars — see *why* the model predicted what it did |
 | 💬 | **AI Advisor** | An LLM (Groq · Llama 3.1) turns the model's output into plain-English strategic guidance |
+| 🗨️ | **AI Chatbot** | An always-on conversational advisor (Groq · Llama 3.1) — multi-turn Q&A on AI strategy, your decisions, and how to play, available on every dashboard screen |
+| 🔐 | **Sign-In Gateway** | A login / register flow gates entry to the simulation; each access event is recorded to a backend registry |
+| 📱 | **Responsive UI** | Adapts from desktop to mobile — the sidebar collapses into a tap-to-dismiss drawer and dashboards reflow for small screens |
 | ⚠️ | **Crisis Engine** | Dynamic project-cost scaling + a crisis mode that reshapes the decision pool when you near insolvency |
 
 ---
@@ -90,7 +93,7 @@ As organizations adopt Artificial Intelligence, business leaders face high-stake
 | **Frontend** | React 18 · TypeScript · Vite · Tailwind CSS · Zustand · React Three Fiber · Recharts |
 | **Backend** | FastAPI · Uvicorn · SQLAlchemy · Pydantic |
 | **Machine Learning** | XGBoost · scikit-learn · **SHAP** · pandas · NumPy · joblib |
-| **Generative AI** | Groq API (Llama 3.1) — the in-game AI Advisor |
+| **Generative AI** | Groq API (Llama 3.1) — the in-game AI Advisor & conversational chatbot |
 | **Persistence** | SQLite |
 | **Deployment** | Vercel (frontend) · Render (backend) |
 
@@ -186,11 +189,11 @@ The-Last-CEO/
 ├── frontend/                      # React console dashboard
 │   ├── public/                    # Static assets (city backdrop, board avatars)
 │   └── src/
-│       ├── components/            # HUD cards, charts, modals, sidebar, 3D CEOModel
+│       ├── components/            # HUD cards, charts, modals, sidebar, chatbot widget, 3D CEOModel
 │       ├── data/                  # decisions.ts (decision pool) · skins.ts (cosmetic skins)
 │       ├── hooks/                 # Game loop, adaptive decision roll, API
 │       ├── lib/                   # Axios client & styling utils
-│       ├── pages/                 # Landing · Home · Engine · Outcome · Database
+│       ├── pages/                 # Landing · Auth · Home · Engine · Outcome · Database
 │       └── store/                 # Zustand state store
 ├── models/                        # Pre-trained models (revenue & productivity .joblib)
 ├── scripts/                       # train_models.py · train_revenue_tuned.py
@@ -225,7 +228,7 @@ uvicorn app:app --host 0.0.0.0 --port 8000 --reload
 
 API → `http://localhost:8000` · interactive docs → `http://localhost:8000/docs`
 
-> **AI Advisor (optional):** the `/advisor` endpoint uses Groq (`llama-3.1-8b-instant`). Provide a key from [console.groq.com/keys](https://console.groq.com/keys) in `backend/.env`, which is loaded on startup:
+> **AI Advisor & Chatbot (optional):** the `/advisor` and `/chat` endpoints use Groq (`llama-3.1-8b-instant`). Provide a key from [console.groq.com/keys](https://console.groq.com/keys) in `backend/.env`, which is loaded on startup:
 > ```bash
 > # backend/.env
 > GROQ_API_KEY=your_key_here
@@ -262,6 +265,8 @@ Base URL: `http://localhost:8000/api`
 | `POST` | `/predict` | Run a revenue & productivity prediction for a scenario; returns metrics + A/B/C investment scenarios |
 | `POST` | `/explain` | SHAP feature attribution for a prediction (per-factor contribution in dollars) |
 | `POST` | `/advisor` | LLM (Groq · Llama 3.1) strategic briefing grounded in the model output |
+| `POST` | `/chat` | Multi-turn conversational advisor (Groq · Llama 3.1) — forwards recent message history and returns the assistant reply |
+| `POST` | `/auth/log` | Record a sign-in / register event to the backend registry (`CEO_Registry.csv`) |
 | `POST` | `/save_game_history` | Persist a completed run's quarterly payloads to the ledger |
 | `GET` | `/predictions` | Return the 50 most recent stored predictions |
 

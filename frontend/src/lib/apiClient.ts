@@ -1,7 +1,13 @@
 import axios from 'axios';
 
+// Endpoints are all prefixed with `/api/...`, so the base URL must be the bare
+// origin. Tolerate a VITE_API_URL that already ends in `/api` (and any trailing
+// slash) so a misconfigured env var can't produce a double `/api/api/...` path.
+const rawBase = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? '' : 'http://localhost:8000');
+const baseURL = rawBase.replace(/\/+$/, '').replace(/\/api$/, '');
+
 const apiClient = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || (import.meta.env.PROD ? '' : 'http://localhost:8000'),
+  baseURL,
   timeout: 30000,
   headers: {
     'Content-Type': 'application/json',
@@ -68,6 +74,11 @@ export const api = {
   // Auth endpoints
   async logAuth(payload: any) {
     return apiClient.post('/api/auth/log', payload);
+  },
+
+  // Chatbot
+  async chat(messages: { role: string; content: string }[]) {
+    return apiClient.post('/api/chat', { messages });
   }
 };
 
