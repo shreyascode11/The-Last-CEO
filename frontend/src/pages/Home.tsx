@@ -622,8 +622,8 @@ export const Home = () => {
 
       {/* Holographic Table */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center z-0 opacity-70 pointer-events-none">
-        <div className="w-[400px] h-[400px] rounded-full border border-cyan-500/10 bg-cyan-950/10 shadow-[0_0_100px_rgba(6,182,212,0.05)] flex items-center justify-center relative">
-          <GlobeIcon className={cn("w-40 h-40 opacity-50 drop-shadow-[0_0_20px_rgba(255,255,255,0.5)]", globeColor, formData.industry ? "animate-[spin_20s_linear_infinite]" : "animate-pulse")} />
+        <div className="w-[300px] h-[300px] sm:w-[400px] sm:h-[400px] rounded-full border border-cyan-500/10 bg-cyan-950/10 shadow-[0_0_100px_rgba(6,182,212,0.05)] flex items-center justify-center relative">
+          <GlobeIcon className={cn("w-28 h-28 sm:w-40 sm:h-40 opacity-50 drop-shadow-[0_0_20px_rgba(255,255,255,0.5)]", globeColor, formData.industry ? "animate-[spin_20s_linear_infinite]" : "animate-pulse")} />
           <div className="absolute inset-0 rounded-full border border-cyan-500/20 animate-[spin_10s_linear_infinite] scale-75" />
           <div className="absolute inset-0 rounded-full border border-blue-500/10 animate-[spin_15s_linear_infinite_reverse] scale-90" />
           <div className="absolute bottom-[-30px] text-[10px] text-cyan-500/30 uppercase tracking-widest bg-black px-4 py-1 border border-cyan-900/50 rounded-full">

@@ -100,6 +100,32 @@ def get_advisor_insights(req: AdvisorRequest):
     except Exception as e:
         return {"error": str(e)}
 
+# ── AI Chatbot (multi-turn, Groq) ──────────────────────────────
+class ChatRequest(BaseModel):
+    messages: list
+
+@app.post("/api/chat")
+def chat(req: ChatRequest):
+    groq_api_key = os.environ.get("GROQ_API_KEY", "")
+    system = {"role": "system", "content": (
+        "You are the AI Business Advisor inside 'The Last CEO', an AI business-strategy "
+        "simulation game. Help the player with AI adoption strategy, business decisions, "
+        "and how to play. Be concise, practical, and encouraging — keep replies under 4 sentences."
+    )}
+    history = [{"role": ("assistant" if m.get("role") == "assistant" else "user"),
+                "content": str(m.get("content", ""))} for m in (req.messages or [])][-12:]
+    payload = json.dumps({"model": "llama-3.1-8b-instant", "messages": [system] + history}).encode("utf-8")
+    req_obj = urllib.request.Request(
+        "https://api.groq.com/openai/v1/chat/completions", data=payload,
+        headers={"Authorization": f"Bearer {groq_api_key}", "Content-Type": "application/json",
+                 "User-Agent": "Mozilla/5.0"}, method="POST")
+    try:
+        with urllib.request.urlopen(req_obj, timeout=30) as response:
+            body = json.loads(response.read())
+            return {"reply": body["choices"][0]["message"]["content"]}
+    except Exception as e:
+        return {"reply": "", "error": str(e)}
+
 # Load models
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 rev_model_path = os.path.join(BASE_DIR, 'models', 'revenue_model.joblib')

@@ -17,7 +17,7 @@ export const Sidebar = ({ onClose }: { onClose?: () => void }) => {
   ];
 
   return (
-    <aside className="fixed left-0 top-0 w-56 h-screen relative flex flex-col z-50 font-space overflow-hidden border-r border-cyan-500/20 bg-gradient-to-b from-[#070b16] via-[#05070f] to-[#070b16]">
+    <aside className="relative w-56 h-screen flex flex-col z-50 font-space overflow-hidden border-r border-cyan-500/20 bg-gradient-to-b from-[#070b16] via-[#05070f] to-[#070b16]">
       {/* Animated scan sweep + grid texture */}
       <div className="cyber-sweep-overlay opacity-60" />
       <div

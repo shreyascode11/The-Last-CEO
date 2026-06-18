@@ -68,6 +68,11 @@ export const api = {
   // Auth endpoints
   async logAuth(payload: any) {
     return apiClient.post('/api/auth/log', payload);
+  },
+
+  // Chatbot
+  async chat(messages: { role: string; content: string }[]) {
+    return apiClient.post('/api/chat', { messages });
   }
 };
 
